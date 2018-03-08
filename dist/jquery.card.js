@@ -218,7 +218,7 @@ var card =
 	      return QJ.addClass(this.$card, 'jp-card-ie-11');
 	    }
 	  };
-
+		
 	  Card.prototype.attachHandlers = function() {
 	    var expiryFilters, numberInputFilters;
 	    numberInputFilters = [this.validToggler('cardNumber')];
@@ -342,7 +342,11 @@ var card =
 	      return val.replace(/\d/g, mask);
 	    }
 	  };
-
+		//Function to manually trigger card details update
+		//This can be usefull when you have multiple name fields all in sync (Billing/Delivery address)
+          Card.prototype.forceupdate=function(el){
+              doupdate(el);
+          }		
 	  Card.prototype.handlers = {
 	    setCardType: function($el, e) {
 	      var cardType;
@@ -396,6 +400,11 @@ var card =
 	      return QJ.removeClass(out, 'jp-card-focused');
 	    });
 	    QJ.on(el, 'keyup change paste', function(e) {
+		    //move this to a sparae function so it can be easily called manually as well
+		return doupdate(el);
+	    });
+		  //this was the orriginal fucntion triggered on input changed.
+		doupdate=function(el) {	  
 	      var elem, filter, i, j, join, k, len, len1, outEl, outVal, ref, results, val;
 	      val = (function() {
 	        var j, len, results;
@@ -427,7 +436,7 @@ var card =
 	        results.push(outEl.textContent = outVal);
 	      }
 	      return results;
-	    });
+	    }
 	    return el;
 	  };
 
